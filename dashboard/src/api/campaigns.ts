@@ -17,7 +17,7 @@ function buildQuery(params: CampaignQuery): string {
   const search = params.search?.trim();
   if (search) qs.set("search", search);
 
-  if (params.status && params.status !== "") qs.set("status", params.status);
+  if (params.status !== undefined && params.status !== "") qs.set("status", params.status);
 
   return qs.toString();
 }
