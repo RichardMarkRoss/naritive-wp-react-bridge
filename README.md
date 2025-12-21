@@ -1,176 +1,99 @@
 # Naritive WordPress ↔ React Bridge
 
-This repository contains a practical bridge application demonstrating how to connect a **legacy WordPress backend** with a **modern React + TypeScript frontend**, mirroring real-world work at Naritive Tech.
+This repository contains a **full-stack bridge application** that simulates real-world work at **Naritive Tech**.
 
-The focus of this project is **code quality, architecture, security, and maintainability** rather than visual polish.
+It demonstrates how to connect a **legacy WordPress backend** with a **modern React + TypeScript dashboard**, focusing on **architecture, code quality, security, and workflow** rather than visual polish.
 
 ---
 
-## 📁 Repository Structure
+## 📦 Repository Overview
+
+This is a **monorepo** containing two main parts:
 
 ```text
 naritive-wp-react-bridge/
-├── plugin/          # Custom WordPress plugin (PHP, OOP)
-├── dashboard/       # React + TypeScript dashboard
-├── README.md        # This documentation
+├── plugin/     # WordPress plugin (legacy backend)
+├── dashboard/  # React + TypeScript dashboard (modern frontend)
+└── .github/    # CI workflows and PR templates
 ```
 
 ---
 
 ## 🧩 Part 1: WordPress Plugin (Legacy Foundation)
 
-### Overview
-A standalone WordPress plugin that:
-- Registers a custom **Campaign** post type
-- Stores campaign metadata
-- Exposes campaign data via a secure, read-only REST API
-- Provides a legacy-style frontend form for campaign creation
+Located in: `plugin/`
 
-### Features
-- **Custom Post Type:** Campaigns
-- **Meta Fields:**
-  - Client Name (string)
-  - Budget (numeric)
-  - Start Date (date)
-  - Status (Active / Paused)
-- **Frontend Campaign Creation**
-  - Implemented via shortcode
-  - Uses standard PHP form handling or jQuery-based AJAX
-  - Nonce verification and sanitization included
-- **REST API**
-  - Namespace: `/wp-json/naritive/v1`
-  - Endpoint: `/campaigns`
-  - Supports:
-    - Pagination (`page`, `per_page`)
-    - Filtering (status, budget range)
-    - Search (client name)
-  - Public read-only access
-  - Returns only safe, required fields
+### Responsibilities
+- Register a **Campaign** Custom Post Type (CPT)
+- Store campaign metadata (client, budget, dates, status)
+- Provide a secure **legacy-style frontend form** for creating campaigns
+- Expose campaign data via a **custom REST API**
+- Support server-side pagination, filtering, and search
+
+### Documentation
+📄 See **`plugin/README.md`** for:
+- Local installation instructions
+- How to activate and use the plugin
+- REST API documentation and example JSON responses
 
 ---
 
-### 🔧 Plugin Installation (Local)
+## 🖥️ Part 2: React Dashboard (Modern Frontend)
 
-1. Set up a local WordPress environment  
-   Recommended:
-   - **LocalWP** (https://localwp.com)
+Located in: `dashboard/`
 
-2. Copy the plugin folder:
-   ```text
-   /plugin
-   ```
-   into:
-   ```text
-   wp-content/plugins/
-   ```
+### Responsibilities
+- Consume the WordPress REST API
+- Display campaigns in a clean table/grid layout
+- Provide search, status filtering, and server-side pagination
+- Handle loading, error, empty, and success states gracefully
+- Demonstrate modern React + TypeScript best practices
 
-3. Activate **Naritive Bridge Plugin** from the WordPress Admin panel.
-
-4. (Optional) Create a page and add the shortcode:
-   ```text
-   [naritive_create_campaign]
-   ```
-   to access the legacy campaign creation form.
+### Documentation
+📄 See **`dashboard/README.md`** for:
+- How to install dependencies
+- Environment variable setup
+- How to start the development server
 
 ---
 
-### 🔌 REST API Example
+## 🔄 Part 3: Workflow & DevOps
 
-```http
-GET /wp-json/naritive/v1/campaigns?page=1&per_page=10&status=active&search=acme
-```
+This repository demonstrates professional workflow practices:
 
-Example response:
-```json
-{
-  "data": [
-    {
-      "id": 1,
-      "client_name": "Acme Corp",
-      "budget": 15000,
-      "start_date": "2024-09-01",
-      "status": "active"
-    }
-  ],
-  "meta": {
-    "page": 1,
-    "per_page": 10,
-    "total": 42
-  }
-}
-```
+- Feature-based branching strategy
+- Conventional commit messages
+- Pull Request template for structured reviews
+- GitHub Actions CI:
+  - PHP linting for the WordPress plugin
+  - Install, type-check, and build validation for the React dashboard
+- Monorepo-friendly CI path filtering
+
+No production deployment is configured — CI exists to validate correctness and delivery readiness.
 
 ---
 
-## 🖥️ Part 2: React + TypeScript Dashboard
+## 🚀 Quick Start (Local)
 
-### Overview
-A modern dashboard that consumes the WordPress REST API and displays campaign data in a clean, interactive UI.
+1. Install and activate the WordPress plugin  
+   → Follow **`plugin/README.md`**
 
-### Tech Stack
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
+2. Run the React dashboard  
+   → Follow **`dashboard/README.md`**
 
-### Features
-- Campaign table/grid display
-- Currency-formatted budgets
-- Search by client name
-- Status filter (Active / Paused)
-- Server-side pagination
-- Loading, error, and empty states
+Both parts are designed to run locally and independently.
 
 ---
 
-### 🚀 Dashboard Setup
+## 🧠 Design Philosophy
 
-```bash
-cd dashboard
-npm install
-npm run dev
-```
-
-The app will be available at:
-```text
-http://localhost:5173
-```
-
-### Environment Variables
-
-Create a `.env` file in `/dashboard`:
-
-```env
-VITE_API_BASE_URL=http://your-local-wp-site/wp-json/naritive/v1
-```
-
----
-
-## 🧪 Development Notes
-
-- WordPress plugin is written using an **OOP architecture**
-- No heavy third-party WP libraries (ACF, CPT UI) are used
-- API responses are intentionally shaped to avoid exposing internal WP data
-- React components are kept small and composable
-- API logic is isolated from UI components
-
----
-
-## 📦 Deployment (Optional)
-
-- **WordPress:** LocalWP or InstaWP (temporary public demo)
-- **React Dashboard:** Vercel (free tier)
-
----
-
-## 🧭 Git Workflow
-
-- Incremental commits reflecting real-world development
-- Clear commit messages
-- Monorepo structure for easier review
+- Prefer clarity and maintainability over over-engineering
+- Keep a strict boundary between backend and frontend concerns
+- Expose only safe, intentional data via the API
+- Treat documentation and workflow as first-class citizens
 
 ---
 
 ## 👤 Author
 
-Built as part of a technical challenge simulating a day at **Naritive Tech**.
+Built as part of a technical challenge simulating a day of work at **Naritive Tech**.
